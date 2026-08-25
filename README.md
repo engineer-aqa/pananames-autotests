@@ -45,11 +45,22 @@ npm run test:headed      # with a visible browser
 npm run report           # open the HTML report of the last run
 ```
 
-Single test or group:
+Single test or suite:
 
 ```bash
 npx playwright test -g "Verify creating a new contact"
+npx playwright test --grep @contacts     # suite tags: @contacts, @domains
 ```
+
+## CI
+
+Two GitHub Actions workflows:
+
+- **Code quality** runs on every pull request: ESLint, Prettier and the TypeScript compiler.
+- **Playwright tests** runs on every pull request, and can be started manually with a choice of suite
+  (all, contacts, domains). The account comes from the repository secrets `USER_EMAIL` and
+  `USER_PASSWORD`, the environment from the `BASE_URL` variable. The HTML report is uploaded as an
+  artifact.
 
 ## Code quality
 

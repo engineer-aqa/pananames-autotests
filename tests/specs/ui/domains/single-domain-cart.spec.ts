@@ -3,7 +3,7 @@ import { DOMAIN_ZONES, uniqueSld } from '@support/domain.data';
 
 const ZONES = [DOMAIN_ZONES.COM, DOMAIN_ZONES.NET, DOMAIN_ZONES.ORG];
 
-test.describe('Adding a single domain to the cart', () => {
+test.describe('Adding a single domain to the cart', { tag: '@domains' }, () => {
   test.beforeEach(async ({ loginPage, user, cartService, registerDomainPage }) => {
     await loginPage.loginViaApi(user);
     await cartService.clearCart();

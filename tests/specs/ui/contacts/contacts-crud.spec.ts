@@ -6,7 +6,7 @@ import { buildContactData, toContactBody } from '@support/contact.data';
 const { FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER } = CONTACTS.FIELD;
 const { PROMO_EMAILS, PRODUCT_EMAILS, FINANCE_EMAILS } = CONTACTS.CHECKBOX;
 
-test.describe('Contacts CRUD', () => {
+test.describe('Contacts CRUD', { tag: '@contacts' }, () => {
   test.beforeEach(async ({ loginPage, user, contactsService, contactsPage }) => {
     await loginPage.loginViaApi(user);
     await contactsService.deleteContacts();
