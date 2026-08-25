@@ -5,7 +5,9 @@ import { AuthCredentials } from '@api/types/auth.types';
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 export function environment(): { baseUrl: string } {
-  return { baseUrl: process.env.BASE_URL ?? 'https://mcp.pananames-dev.com' };
+  /* `||`, not `??`: an unset CI variable arrives as an empty string, and that
+     must fall back to the default instead of producing an empty base URL. */
+  return { baseUrl: process.env.BASE_URL || 'https://mcp.pananames-dev.com' };
 }
 
 export function credentials(): { user: AuthCredentials } {
