@@ -6,7 +6,6 @@
     "test": "playwright test",
     "test:ui": "playwright test --project='Chrome E2E tests'",
     "test:contacts": "playwright test tests/specs/ui/contacts",
-    "test:domains": "playwright test tests/specs/ui/domains",
     "test:headed": "playwright test --headed",
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit",
