@@ -13,6 +13,7 @@ export default defineConfig({
   timeout: 90000,
   expect: { timeout: 15000 },
   use: {
+    headless: true,
     baseURL: environment().baseUrl,
     actionTimeout: 15000,
     navigationTimeout: 30000,

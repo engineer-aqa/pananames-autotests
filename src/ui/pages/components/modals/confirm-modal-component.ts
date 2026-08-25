@@ -8,7 +8,7 @@ export class ConfirmModalComponent extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.modal = page.locator('.va-modal');
+    this.modal = page.getByRole('dialog');
     this.okButton = this.modal.getByRole('button', { name: BUTTONS.OK });
   }
 

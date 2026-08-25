@@ -5,13 +5,11 @@ import { BasePage } from '@pages/base-page';
 export class TableComponent extends BasePage {
   readonly table: Locator;
   readonly rows: Locator;
-  readonly headerCell: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.table = page.locator('table');
+    this.table = page.getByRole('table');
     this.rows = page.locator('tbody tr');
-    this.headerCell = page.locator('thead th');
   }
 
   rowByText(text: string): Locator {
@@ -27,7 +25,7 @@ export class TableComponent extends BasePage {
   }
 
   async tableIsLoaded(): Promise<void> {
-    await this.assertElementExist(this.rows);
+    await this.assertElementExist(this.rows.first());
   }
 
   async assertRowExists(rowText: string): Promise<void> {
@@ -40,6 +38,10 @@ export class TableComponent extends BasePage {
 
   async assertRowCell(rowText: string, columnIndex: number, expectedValue: string): Promise<void> {
     await this.assertElementContainText(this.cell(rowText, columnIndex), expectedValue);
+  }
+
+  async assertRowsCount(count: number): Promise<void> {
+    await this.assertElementCount(this.rows, count);
   }
 
   async assertRowActionNotExists(rowText: string, columnIndex: number): Promise<void> {

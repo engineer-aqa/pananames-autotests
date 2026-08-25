@@ -10,3 +10,9 @@ export interface ContactData {
   phoneNumber: string;
   comment?: string;
 }
+
+export interface DomainZone {
+  name: string;
+  /** Zones with a registration notice require confirming it before the domain reaches the cart. */
+  hasRegistrationNotice: boolean;
+}
