@@ -1,5 +1,6 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { expect, Locator, Page, Response } from '@playwright/test';
 import { CheckboxOptions, StateCheckOptions } from '@ui/types/action-options.types';
+import { HttpMethod } from '@api/types/api-response.types';
 
 /**
  * Base class for every page object and component.
@@ -12,14 +13,17 @@ export abstract class BasePage {
   readonly fieldWrapper: Locator;
   readonly button: Locator;
   readonly tableCell: Locator;
-  readonly listItem: Locator;
 
   protected constructor(page: Page) {
     this.page = page;
     this.fieldWrapper = page.locator('div.relative');
-    this.button = page.locator('button');
-    this.tableCell = page.locator('td');
-    this.listItem = page.locator('li');
+    this.button = page.getByRole('button');
+    this.tableCell = page.getByRole('cell');
+  }
+
+  /* ---------- WAITS ---------- */
+  async waitForResponse(method: HttpMethod, uri: string): Promise<Response> {
+    return this.page.waitForResponse(response => response.url().includes(uri) && response.request().method() === method);
   }
 
   /* ---------- FORM FIELDS ---------- */

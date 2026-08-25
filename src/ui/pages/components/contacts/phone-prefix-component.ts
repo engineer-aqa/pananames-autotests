@@ -11,12 +11,14 @@ export class PhonePrefixComponent extends BasePage {
   readonly countryInput: Locator;
   readonly selectedLabel: Locator;
   readonly selectedLabelText: Locator;
+  readonly countryOptions: Locator;
 
   constructor(page: Page) {
     super(page);
     this.countryInput = page.locator('.country-intl-input');
     this.selectedLabel = page.locator('.country-intl-label').first();
     this.selectedLabelText = page.locator('.country-intl-label-text');
+    this.countryOptions = page.locator('.vue-country-list').getByRole('listitem');
   }
 
   /**
@@ -32,7 +34,7 @@ export class PhonePrefixComponent extends BasePage {
     await this.openDropdown();
     await this.countryInput.fill(country);
 
-    const option = this.listItem.filter({ hasText: country }).first();
+    const option = this.countryOptions.filter({ hasText: country }).first();
     await this.assertElementExist(option);
     await option.click();
     await this.assertSelectedCountry(country);

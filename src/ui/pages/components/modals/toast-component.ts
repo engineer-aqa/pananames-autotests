@@ -7,7 +7,7 @@ export class ToastComponent extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.toast = page.locator('.va-toast');
+    this.toast = page.getByRole('alertdialog');
     this.toastTitle = this.toast.locator('.va-toast__content .font-semibold');
   }
 
