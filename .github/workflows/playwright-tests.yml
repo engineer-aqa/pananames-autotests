@@ -49,9 +49,17 @@ jobs:
           fi
 
       - name: Upload report
+        id: report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ env.SUITE }}
           path: playwright-report/
           retention-days: 7
+
+      - name: Link the report
+        if: ${{ !cancelled() }}
+        run: |
+          echo "## Playwright report" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download the HTML report](${{ steps.report.outputs.artifact-url }}) - unzip it and open index.html," >> "$GITHUB_STEP_SUMMARY"
+          echo "or run \`npx playwright show-report <unzipped folder>\`." >> "$GITHUB_STEP_SUMMARY"

@@ -1,9 +1,10 @@
 import { test } from '@fixtures/main-ui-tests-fixtures';
+import { TAGS } from '@constants/tags';
 import { DOMAIN_ZONES, uniqueSld } from '@support/domain.data';
 
 const ZONES = [DOMAIN_ZONES.COM, DOMAIN_ZONES.NET, DOMAIN_ZONES.ORG];
 
-test.describe('Adding a single domain to the cart', { tag: '@domains' }, () => {
+test.describe('Adding a single domain to the cart', { tag: TAGS.DOMAINS }, () => {
   test.beforeEach(async ({ loginPage, user, cartService, registerDomainPage }) => {
     await loginPage.loginViaApi(user);
     await cartService.clearCart();

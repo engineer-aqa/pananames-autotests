@@ -1,4 +1,5 @@
 import { test } from '@fixtures/main-ui-tests-fixtures';
+import { TAGS } from '@constants/tags';
 import { CONTACTS } from '@pages/constants/contacts';
 import { MODALS, TOAST_MESSAGES } from '@pages/constants/messages';
 import { buildContactData, toContactBody } from '@support/contact.data';
@@ -6,7 +7,7 @@ import { buildContactData, toContactBody } from '@support/contact.data';
 const { FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER } = CONTACTS.FIELD;
 const { PROMO_EMAILS, PRODUCT_EMAILS, FINANCE_EMAILS } = CONTACTS.CHECKBOX;
 
-test.describe('Contacts CRUD', { tag: '@contacts' }, () => {
+test.describe('Contacts CRUD', { tag: TAGS.CONTACTS }, () => {
   test.beforeEach(async ({ loginPage, user, contactsService, contactsPage }) => {
     await loginPage.loginViaApi(user);
     await contactsService.deleteContacts();
