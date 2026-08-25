@@ -1,0 +1,65 @@
+name: Playwright tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Which suite to run
+        type: choice
+        default: all
+        options:
+          - all
+          - contacts
+          - domains
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      SUITE: ${{ inputs.suite || 'all' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: |
+          if [ "$SUITE" = "all" ]; then
+            npx playwright test
+          else
+            npx playwright test --grep "@$SUITE"
+          fi
+
+      - name: Upload report
+        id: report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ env.SUITE }}
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Link the report
+        if: ${{ !cancelled() }}
+        run: |
+          echo "## Playwright report" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download the HTML report](${{ steps.report.outputs.artifact-url }}) - unzip it and open index.html," >> "$GITHUB_STEP_SUMMARY"
+          echo "or run \`npx playwright show-report <unzipped folder>\`." >> "$GITHUB_STEP_SUMMARY"

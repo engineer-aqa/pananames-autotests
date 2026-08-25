@@ -33,6 +33,9 @@ export default tseslint.config(
       ...playwright.configs['flat/recommended'].rules,
       /* Assertions live in the page objects, not in the specs. */
       'playwright/expect-expect': 'off',
+      /* Tags come from constants rather than literals; Playwright resolves them
+         at runtime, so `--grep @contacts` keeps working. */
+      'playwright/valid-test-tags': 'off',
     },
   },
   prettierRecommended
