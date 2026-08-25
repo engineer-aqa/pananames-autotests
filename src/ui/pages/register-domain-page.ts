@@ -7,6 +7,7 @@ import { API_ROUTES } from '@api/constants/api-routes';
 import { BUTTONS } from '@pages/constants/buttons';
 import { DOMAIN_SEARCH } from '@pages/constants/cart';
 import { parseLastPrice } from '@utils/price';
+import { DomainZone } from '@common/types/test-data.types';
 
 export class RegisterDomainPage extends BasePage {
   readonly cartBar: CartBarComponent;
@@ -29,10 +30,10 @@ export class RegisterDomainPage extends BasePage {
     await this.assertElementExist(this.searchInput);
   }
 
-  async searchDomain(query: string): Promise<void> {
-    await this.searchInput.fill(query);
+  async searchDomain(searchTerm: string): Promise<void> {
+    await this.searchInput.fill(searchTerm);
     await this.searchInput.press('Enter');
-    await this.assertElementExist(this.resultRows, { timeout: 30000 });
+    await this.assertElementExist(this.rowByDomain(searchTerm), { timeout: 30000 });
   }
 
   rowByDomain(domain: string): Locator {
@@ -50,18 +51,13 @@ export class RegisterDomainPage extends BasePage {
    * Waiting for the request itself keeps the action deterministic: the result
    * list re-renders while the remaining zones load, so a click can land on a
    * row that is being replaced, and the failure would otherwise be silent.
-   * Zones such as .net additionally ask to accept a registration notice before
-   * the domain reaches the cart.
    */
-  async addDomainToCart(domain: string): Promise<void> {
-    const addedToCart = this.waitForResponse('POST', `${API_ROUTES.REGISTER_DOMAIN.ADD_TO_CART}/${domain}/add-to-cart`);
-
+  async addDomainToCart(domain: string, { hasRegistrationNotice }: DomainZone): Promise<void> {
     await this.rowByDomain(domain).getByRole('button', { name: BUTTONS.ADD_TO_CART }).click();
-    /* TODO: replace the race with a plain check once the application tells upfront
-       which zones require a notice - racing the request against the modal only
-       exists because that is unknown until the click happens. */
-    await Promise.race([addedToCart, this.registrationNotice.acceptWhenShown()]);
-    await addedToCart;
+    if (hasRegistrationNotice) {
+      await this.registrationNotice.accept(domain);
+    }
+    await this.waitForResponse('POST', `${API_ROUTES.REGISTER_DOMAIN.ADD_TO_CART}/${domain}/add-to-cart`);
   }
 
   async proceedToCart(): Promise<void> {

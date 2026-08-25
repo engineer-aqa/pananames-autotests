@@ -70,7 +70,7 @@ export abstract class BasePage {
 
   /* ---------- BASIC ACTIONS ---------- */
   async clickOnButtonByName(button: string): Promise<void> {
-    await this.page.getByRole('button', { name: button }).first().click();
+    await this.page.getByRole('button', { name: button }).click();
   }
 
   /* ---------- ASSERTIONS ---------- */
@@ -79,15 +79,15 @@ export abstract class BasePage {
   }
 
   async assertElementExist(locator: Locator, options?: StateCheckOptions): Promise<void> {
-    await expect(locator.first()).toBeVisible(options);
+    await expect(locator).toBeVisible(options);
   }
 
   async assertElementNotExist(locator: Locator, options?: StateCheckOptions): Promise<void> {
-    await expect(locator.first()).toBeHidden(options);
+    await expect(locator).toBeHidden(options);
   }
 
   async assertElementContainText(locator: Locator, text: string | RegExp): Promise<void> {
-    await expect(locator.first()).toContainText(text);
+    await expect(locator).toContainText(text);
   }
 
   async assertElementCount(locator: Locator, count: number): Promise<void> {

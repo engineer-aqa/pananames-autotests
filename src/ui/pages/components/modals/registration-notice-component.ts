@@ -18,13 +18,10 @@ export class RegistrationNoticeComponent extends BasePage {
     this.agreeButton = this.modal.getByRole('button', { name: new RegExp(BUTTONS.AGREE_ADD_TO_CART, 'i') });
   }
 
-  /** Accepts the notice; does nothing for the zones that do not show one. */
-  async acceptWhenShown(timeout = 10000): Promise<void> {
-    try {
-      await this.modal.waitFor({ state: 'visible', timeout });
-      await this.agreeButton.click();
-    } catch {
-      /* The zone has no registration notice - nothing to accept. */
-    }
+  /** Confirms the notice; fails when the zone was expected to show one and did not. */
+  async accept(domain: string): Promise<void> {
+    await this.assertElementExist(this.modal);
+    await this.assertElementContainText(this.modal, domain);
+    await this.agreeButton.click();
   }
 }

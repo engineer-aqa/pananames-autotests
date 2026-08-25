@@ -25,7 +25,7 @@ export class TableComponent extends BasePage {
   }
 
   async tableIsLoaded(): Promise<void> {
-    await this.assertElementExist(this.rows);
+    await this.assertElementExist(this.rows.first());
   }
 
   async assertRowExists(rowText: string): Promise<void> {

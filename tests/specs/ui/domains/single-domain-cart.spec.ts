@@ -15,11 +15,11 @@ test.describe('Adding a single domain to the cart', () => {
   });
 
   for (const zone of ZONES) {
-    test(`Verify the cart total matches the search price for a "${zone}" domain`, async ({
+    test(`Verify the cart total matches the search price for a "${zone.name}" domain`, async ({
       registerDomainPage,
       cartPage,
     }) => {
-      const domain = `${uniqueSld()}${zone}`;
+      const domain = `${uniqueSld()}${zone.name}`;
       let searchPrice: number;
 
       await test.step(`Search for "${domain}" and verify it is available`, async () => {
@@ -31,8 +31,8 @@ test.describe('Adding a single domain to the cart', () => {
         searchPrice = await registerDomainPage.getDomainPrice(domain);
       });
 
-      await test.step('Add the domain to the cart', async () => {
-        await registerDomainPage.addDomainToCart(domain);
+      await test.step('Add the domain to the cart, confirming the registration notice when the zone has one', async () => {
+        await registerDomainPage.addDomainToCart(domain, zone);
         await registerDomainPage.cartBar.assertDomainsCount(1);
       });
 
