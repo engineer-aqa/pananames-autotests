@@ -5,8 +5,6 @@ const VIEW_PORT = { width: 1440, height: 900 };
 
 export default defineConfig({
   testDir: './tests',
-  /* The cart and the contact list are shared server side state of a single
-     account, so the tests must not run in parallel. */
   fullyParallel: false,
   workers: 1,
   forbidOnly: !!process.env.CI,
