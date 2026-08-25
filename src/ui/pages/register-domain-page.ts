@@ -55,7 +55,7 @@ export class RegisterDomainPage extends BasePage {
   async addDomainToCart(domain: string, { hasRegistrationNotice }: DomainZone): Promise<void> {
     await this.rowByDomain(domain).getByRole('button', { name: BUTTONS.ADD_TO_CART }).click();
     if (hasRegistrationNotice) {
-      await this.registrationNotice.accept(domain);
+      await this.registrationNotice.agreeAndAddToCart(domain);
     }
     await this.waitForResponse('POST', `${API_ROUTES.REGISTER_DOMAIN.ADD_TO_CART}/${domain}/add-to-cart`);
   }
