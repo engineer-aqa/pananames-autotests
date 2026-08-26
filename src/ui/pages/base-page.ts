@@ -68,8 +68,9 @@ export abstract class BasePage {
   }
 
   /* ---------- ASSERTIONS ---------- */
-  async assertUrlContains(route: string): Promise<void> {
-    await expect(this.page).toHaveURL(new RegExp(route.replace(/\//g, '\\/')));
+  /** The path of the open page starts with `route`; origin and query are ignored. */
+  async assertUrlPath(route: string): Promise<void> {
+    await expect(this.page).toHaveURL(url => url.pathname.startsWith(route));
   }
 
   async assertElementExist(locator: Locator, options?: StateCheckOptions): Promise<void> {

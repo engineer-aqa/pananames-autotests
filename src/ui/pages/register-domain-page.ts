@@ -100,7 +100,7 @@ export class RegisterDomainPage extends BasePage {
 
   async proceedToCart(): Promise<void> {
     await this.cartBar.proceedToCart();
-    await this.assertUrlContains(ROUTES.CART);
+    await this.assertUrlPath(ROUTES.CART);
   }
 
   async assertDomainIsAvailable(domain: string): Promise<void> {

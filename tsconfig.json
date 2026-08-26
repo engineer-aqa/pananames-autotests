@@ -22,7 +22,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "strictNullChecks": false
+    "strictNullChecks": true
   },
   "include": ["src", "tests", "playwright.config.ts"],
   "exclude": ["node_modules"]
