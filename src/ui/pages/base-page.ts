@@ -1,10 +1,9 @@
-import { expect, Locator, Page, Response } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { CheckboxOptions, StateCheckOptions } from '@ui/types/action-options.types';
-import { HttpMethod } from '@api/types/api-response.types';
 
 /**
  * Base class for every page object and component.
- * Holds the locators, actions, waits and assertions shared across the app,
+ * Holds the locators, actions and assertions shared across the app,
  * so that pages and components only describe what is specific to them.
  */
 export abstract class BasePage {
@@ -19,11 +18,6 @@ export abstract class BasePage {
     this.fieldWrapper = page.locator('div.relative');
     this.button = page.getByRole('button');
     this.tableCell = page.getByRole('cell');
-  }
-
-  /* ---------- WAITS ---------- */
-  async waitForResponse(method: HttpMethod, uri: string): Promise<Response> {
-    return this.page.waitForResponse(response => response.url().includes(uri) && response.request().method() === method);
   }
 
   /* ---------- FORM FIELDS ---------- */
@@ -92,6 +86,11 @@ export abstract class BasePage {
 
   async assertElementCount(locator: Locator, count: number): Promise<void> {
     await expect(locator).toHaveCount(count);
+  }
+
+  /** Waits until at least `count` elements match, for a list that is still filling in. */
+  async assertMinElementCount(locator: Locator, count: number, options?: StateCheckOptions): Promise<void> {
+    await expect.poll(() => locator.count(), options).toBeGreaterThanOrEqual(count);
   }
 
   async assertFieldValue(label: string, value: string): Promise<void> {

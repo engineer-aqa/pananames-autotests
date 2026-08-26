@@ -1,7 +1,5 @@
 export const TOAST_MESSAGES = {
   SUCCESS: 'Success',
-  CONTACT_ADDED: 'Contact Added',
-  CONTACT_UPDATED: 'Contact Updated',
   CONTACT_REMOVED: 'Contact successfully removed!',
 } as const;
 

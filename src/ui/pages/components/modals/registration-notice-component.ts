@@ -9,18 +9,22 @@ import { MODALS } from '@pages/constants/messages';
  * buttons are matched case-insensitively.
  */
 export class RegistrationNoticeComponent extends BasePage {
-  readonly modal: Locator;
-  readonly agreeButton: Locator;
+  private readonly notice: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.modal = page.getByRole('dialog').filter({ hasText: new RegExp(MODALS.REGISTRATION_NOTICE, 'i') });
-    this.agreeButton = this.modal.getByRole('button', { name: new RegExp(BUTTONS.AGREE_ADD_TO_CART, 'i') });
+    this.notice = page.getByRole('dialog').filter({ hasText: new RegExp(MODALS.REGISTRATION_NOTICE, 'i') });
   }
 
+  /** The notice of one domain: the dialog names the domain it was opened for. */
+  modalFor(domain: string): Locator {
+    return this.notice.filter({ hasText: domain });
+  }
+
+  /** Agrees to the notice - until that happens the domain never reaches the cart. */
   async agreeAndAddToCart(domain: string): Promise<void> {
-    await this.assertElementExist(this.modal);
-    await this.assertElementContainText(this.modal, domain);
-    await this.agreeButton.click();
+    await this.modalFor(domain)
+      .getByRole('button', { name: new RegExp(BUTTONS.AGREE_ADD_TO_CART, 'i') })
+      .click();
   }
 }

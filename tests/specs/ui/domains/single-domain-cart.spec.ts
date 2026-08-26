@@ -2,8 +2,6 @@ import { test } from '@fixtures/main-ui-tests-fixtures';
 import { TAGS } from '@constants/tags';
 import { DOMAIN_ZONES, uniqueSld } from '@support/domain.data';
 
-const ZONES = [DOMAIN_ZONES.COM, DOMAIN_ZONES.NET, DOMAIN_ZONES.ORG];
-
 test.describe('Adding a single domain to the cart', { tag: TAGS.DOMAINS }, () => {
   test.beforeEach(async ({ loginPage, user, cartService, registerDomainPage }) => {
     await loginPage.loginViaApi(user);
@@ -15,12 +13,12 @@ test.describe('Adding a single domain to the cart', { tag: TAGS.DOMAINS }, () =>
     await cartService.clearCart();
   });
 
-  for (const zone of ZONES) {
-    test(`Verify the cart total matches the search price for a "${zone.name}" domain`, async ({
+  for (const zone of DOMAIN_ZONES) {
+    test(`Verify the cart total matches the search price for a "${zone}" domain`, async ({
       registerDomainPage,
       cartPage,
     }) => {
-      const domain = `${uniqueSld()}${zone.name}`;
+      const domain = `${uniqueSld()}${zone}`;
       let searchPrice: number;
 
       await test.step(`Search for "${domain}" and verify it is available`, async () => {
@@ -32,8 +30,8 @@ test.describe('Adding a single domain to the cart', { tag: TAGS.DOMAINS }, () =>
         searchPrice = await registerDomainPage.getDomainPrice(domain);
       });
 
-      await test.step('Add the domain to the cart, confirming the registration notice when the zone has one', async () => {
-        await registerDomainPage.addDomainToCart(domain, zone);
+      await test.step('Add the domain to the cart', async () => {
+        await registerDomainPage.addDomainToCart(domain);
         await registerDomainPage.cartBar.assertDomainsCount(1);
       });
 

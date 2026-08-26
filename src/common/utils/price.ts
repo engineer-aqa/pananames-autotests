@@ -15,6 +15,11 @@ export function parseLastPrice(text: string): number {
   return Number(matches[matches.length - 1][1].replace(/,/g, ''));
 }
 
+export function sumPrices(prices: number[]): number {
+  return prices.reduce((total, price) => total + price, 0);
+}
+
+/** Money the way the application prints it, thousands separator included. */
 export function formatUsd(price: number): string {
-  return `$${price.toFixed(2)}`;
+  return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }

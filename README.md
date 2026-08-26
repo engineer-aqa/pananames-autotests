@@ -40,7 +40,6 @@ everything after `#` is treated as a comment and the password silently gets trun
 npm test                 # the whole suite
 npm run test:contacts    # contacts scenarios only
 npm run test:domains     # domain cart scenarios only
-npm run test:domains     # domain cart scenarios only
 npm run test:headed      # with a visible browser
 npm run report           # open the HTML report of the last run
 ```
