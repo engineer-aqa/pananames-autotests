@@ -1,4 +1,4 @@
-export const BASES = {
+const BASES = {
   CONTACTS: '/contacts',
   DOMAINS: '/domains',
   REGISTER_DOMAIN: '/register-domain',

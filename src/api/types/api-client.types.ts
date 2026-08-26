@@ -4,5 +4,4 @@ export interface RequestOptions {
   headers?: Record<string, string>;
   contentType?: string;
   statusCode?: number | number[];
-  ignoreStatus?: boolean;
 }

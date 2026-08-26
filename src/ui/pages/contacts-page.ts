@@ -29,13 +29,13 @@ export class ContactsPage extends BasePage {
 
   async openAddContactPage(): Promise<void> {
     await this.clickOnButtonByName(BUTTONS.ADD_NEW_CONTACT);
-    await this.assertUrlContains(ROUTES.CONTACTS.ADD);
+    await this.assertUrlPath(ROUTES.CONTACTS.ADD);
     await this.contactForm.assertFormIsOpened();
   }
 
   async openEditContactPage(contactName: string): Promise<void> {
     await this.table.clickRowAction(contactName, CONTACTS.COLUMN.EDIT);
-    await this.assertUrlContains(ROUTES.CONTACTS.EDIT);
+    await this.assertUrlPath(ROUTES.CONTACTS.EDIT);
     await this.contactForm.assertFormIsOpened();
   }
 

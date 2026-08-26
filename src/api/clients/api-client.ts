@@ -16,11 +16,7 @@ let requestContext: APIRequestContext;
  * belongs to the services in `src/api/services`.
  */
 export class ApiClient {
-  readonly apiUrl: string;
-
-  constructor(apiUrl?: string) {
-    this.apiUrl = apiUrl ?? environment().baseUrl;
-  }
+  private readonly apiUrl = environment().baseUrl;
 
   async get(uri: string, options: RequestOptions = {}): Promise<APIResponse> {
     return this.send('GET', uri, { statusCode: 200, ...options });

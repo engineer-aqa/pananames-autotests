@@ -2,18 +2,31 @@
 
 End-to-end tests for the Pananames control panel (`mcp.pananames-dev.com`), written with Playwright and TypeScript.
 
+## What is covered
+
+| Scenario                                                                                                                                  | Spec                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Contacts: create, edit and delete a contact, including the state of the email subscription checkboxes                                     | `tests/specs/ui/contacts/contacts-crud.spec.ts`        |
+| Searching a domain with a zone, adding it to the cart and matching the cart TOTAL against the search price, for `.com`, `.net` and `.org` | `tests/specs/ui/domains/single-domain-cart.spec.ts`    |
+| Searching a name without a zone, adding three available domains and matching the cart TOTAL against the sum of their search prices        | `tests/specs/ui/domains/multiple-domains-cart.spec.ts` |
+
 ## Requirements
 
-- Node.js 20 or newer (Playwright 1.62 does not run on Node 18; the version is pinned in `.nvmrc`)
-- npm 9+
+- Node.js 20 or newer (Playwright 1.62 refuses to start on Node 18; the version is pinned in `.nvmrc`)
+- npm, which ships with Node
 
 ## Installation
 
 ```bash
+git clone https://github.com/engineer-aqa/pananames-autotests.git
+cd pananames-autotests
+
 nvm use            # optional, picks the Node version from .nvmrc
 npm ci
 npx playwright install chromium
 ```
+
+On a bare Linux machine the browser also needs system libraries, which `npx playwright install --with-deps chromium` installs along with it. On macOS the plain command is enough.
 
 ## Configuration
 
@@ -32,6 +45,9 @@ USER_PASSWORD='your-password'
 Wrap the password in single quotes if it contains `#`, `$` or other special characters: without quotes
 everything after `#` is treated as a comment and the password silently gets truncated.
 
+`BASE_URL` is optional - left empty it falls back to `https://mcp.pananames-dev.com`. The credentials are
+required, and the tests fail with an explicit message when they are missing.
+
 `.env` is gitignored and never committed.
 
 ## Running the tests
@@ -39,7 +55,6 @@ everything after `#` is treated as a comment and the password silently gets trun
 ```bash
 npm test                 # the whole suite
 npm run test:contacts    # contacts scenarios only
-npm run test:domains     # domain cart scenarios only
 npm run test:domains     # domain cart scenarios only
 npm run test:headed      # with a visible browser
 npm run report           # open the HTML report of the last run
@@ -69,6 +84,7 @@ npm run lint         # ESLint
 npm run lint:fix     # ESLint with autofix
 npm run typecheck    # tsc --noEmit
 npm run format       # Prettier
+npm run format:check # Prettier without writing, the check CI runs
 ```
 
 ## Project structure
